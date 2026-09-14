@@ -9,6 +9,7 @@
   "scripts": {
     "setup": "node scripts/setup.mjs",
     "start": "node --env-file-if-exists=.env server.js",
+    "seed-sheet": "node --env-file-if-exists=.env scripts/seed-sheet.mjs",
     "test": "node --test tests/api.test.js",
     "test:browser": "node tests/browser.mjs"
   },
@@ -16,6 +17,7 @@
     "cookie-session": "^2.1.1",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
+    "google-auth-library": "^10.9.1",
     "lucide": "^1.46.0",
     "react": "18.3.1",
     "react-dom": "18.3.1"

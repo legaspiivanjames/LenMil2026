@@ -6,6 +6,7 @@ import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { JsonStore, HttpError } from './lib/store.js';
+import { SheetsStore } from './lib/sheetsStore.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const sessionDuration = 8 * 60 * 60 * 1000;
@@ -25,7 +26,9 @@ export async function createApp(options = {}) {
     throw new Error('Production requires APP_ORIGIN=https://your-domain.example.');
   }
   if (appOrigin && new URL(appOrigin).origin !== appOrigin) throw new Error('APP_ORIGIN must be an origin without a trailing slash or path.');
-  const store = options.store ?? new JsonStore(options.dataDir ?? process.env.DATA_DIR ?? path.join(root, 'data'));
+  const store = options.store ?? (process.env.GOOGLE_SHEET_ID
+    ? new SheetsStore({})
+    : new JsonStore(options.dataDir ?? process.env.DATA_DIR ?? path.join(root, 'data')));
   await store.read();
   const app = express();
   app.disable('x-powered-by');
@@ -107,16 +110,17 @@ export async function createApp(options = {}) {
     res.json({ ok: true });
   });
 
-  const files = ['index.html', 'RSVP.html', 'Guests.html', 'Responses.html', 'support.js', 'admin.js', 'admin.css'];
+  const publicRoot = path.join(root, 'public');
+  const files = [
+    'index.html', 'RSVP.html', 'Guests.html', 'Responses.html', 'support.js', 'admin.js', 'admin.css',
+    'vendor/lucide.js', 'vendor/react.js', 'vendor/react-dom.js'
+  ];
   for (const directory of ['assets', 'uploads']) {
-    for (const entry of await readdir(path.join(root, directory), { withFileTypes: true })) {
+    for (const entry of await readdir(path.join(publicRoot, directory), { withFileTypes: true })) {
       if (entry.isFile() && /\.(png|jpe?g|webp|svg|pdf)$/i.test(entry.name)) files.push(`${directory}/${entry.name}`);
     }
   }
   app.get('/', (req, res) => res.redirect('/index.html'));
-  app.get('/vendor/lucide.js', (req, res) => res.sendFile(path.join(root, 'node_modules/lucide/dist/umd/lucide.js')));
-  app.get('/vendor/react.js', (req, res) => res.sendFile(path.join(root, 'node_modules/react/umd/react.production.min.js')));
-  app.get('/vendor/react-dom.js', (req, res) => res.sendFile(path.join(root, 'node_modules/react-dom/umd/react-dom.production.min.js')));
   // Never expose the project root as a static directory: it contains private storage and secrets.
   const publicFiles = new Set(files);
   app.use((req, res, next) => {
@@ -125,7 +129,7 @@ export async function createApp(options = {}) {
     try { requested = decodeURIComponent(req.path).slice(1); } catch { return next(); }
     if (!publicFiles.has(requested)) return next();
     if (requested.endsWith('.html')) res.set('Cache-Control', 'no-store');
-    res.sendFile(path.join(root, requested));
+    res.sendFile(path.join(publicRoot, requested));
   });
   app.use((req, res) => res.status(404).json({ ok: false, code: 'NOT_FOUND', error: 'Not found.' }));
   app.use((error, req, res, next) => {

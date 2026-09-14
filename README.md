@@ -37,6 +37,8 @@ Availability refreshes when the RSVP page or picker regains focus. The server ch
 
 ## Data
 
+This section describes the default local-file storage. If `GOOGLE_SHEET_ID` is set, guests and responses live in a Google Sheet instead — same fields, see "Google Sheets storage" below.
+
 - `data/guests.json`: initial 35 guests from the supplied list, each with `id`, `name`, and `extra`.
 - `data/responses.json`: initially an empty array. Saved records contain `id`, `guestId`, `name`, `additionalAllowed`, `attending`, `additionalGuests`, `additionalGuestCount`, `partySize`, and `submittedAt`.
 
@@ -63,16 +65,48 @@ The previous external spreadsheet has not been modified or imported. The applica
 
 Keep `.env` private. It is ignored by Git and cannot be served by the application. To revoke existing organizer sessions, change both `ADMIN_PASSWORD` and `SESSION_SECRET`, then restart. Incorrect login attempts are limited to 10 per 15 minutes per IP address.
 
+## Google Sheets storage
+
+By default the app stores guests and responses in `data/*.json` on local disk. Set `GOOGLE_SHEET_ID` and `GOOGLE_SERVICE_ACCOUNT_JSON_BASE64` in `.env` to store them in a Google Sheet instead — the app checks for `GOOGLE_SHEET_ID` at startup and uses `lib/sheetsStore.js` automatically when it's present, ignoring `data/*.json` entirely. This is required on Vercel, where the local filesystem does not persist between requests.
+
+**Trade-off:** Google Sheets has no transactions or unique constraints. The one-response-per-guest rule is enforced by re-checking the sheet shortly after each submission and removing a duplicate if one landed at nearly the same instant — this narrows the risk of two near-simultaneous submissions for the same guest both being saved, but does not eliminate it the way a real database would. Fine for a small guest list; know that this is a soft guarantee, not a hard one.
+
+Setup:
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), create (or reuse) a project, then **APIs & Services → Library** and enable **Google Sheets API**.
+2. **APIs & Services → Credentials → Create Credentials → Service Account**. Any name is fine; no project roles are needed.
+3. Open the new service account → **Keys → Add Key → Create new key → JSON**. This downloads a `.json` key file — keep it private, it's a credential.
+4. Create a new Google Sheet. Copy its ID from the URL: `https://docs.google.com/spreadsheets/d/`**`THIS-PART`**`/edit`.
+5. Share that sheet with the service account's email (the `client_email` field in the downloaded JSON) as **Editor**. Uncheck "notify people".
+6. Base64-encode the whole downloaded JSON file and put the values in `.env`:
+   ```powershell
+   [Convert]::ToBase64String([IO.File]::ReadAllBytes("path\to\your-key.json")) | Set-Clipboard
+   ```
+   Paste the clipboard contents as `GOOGLE_SERVICE_ACCOUNT_JSON_BASE64`, and the sheet ID from step 4 as `GOOGLE_SHEET_ID`.
+7. Run `npm run seed-sheet`. This creates the `Guests` and `Responses` tabs with the right header row, and imports your current `data/guests.json` / `data/responses.json` if those tabs are still empty. Safe to re-run.
+8. `npm start` — the server logs nothing different, but is now reading/writing the sheet.
+
+For Vercel, add the same two variables in the project's **Settings → Environment Variables** (see below).
+
 ## Online hosting
 
-Use a Node.js host with **persistent writable disk storage**, one running application process, and HTTPS. This project cannot collect shared responses on a static-only host or an ephemeral serverless filesystem.
+Use a Node.js host with **persistent writable disk storage**, one running application process, and HTTPS. This project cannot collect shared responses on a static-only host or an ephemeral serverless filesystem — unless Google Sheets storage (above) is configured, since then there's no local disk to lose.
 
 1. Install dependencies with `npm ci --omit=dev`.
-2. Configure the environment settings above, including a persistent absolute `DATA_DIR`.
-3. Before the first start, place **both** JSON files in that directory. Use the original initial files for a fresh event, or your current backed-up pair when migrating existing records.
+2. Configure the environment settings above, including a persistent absolute `DATA_DIR` (skip this if using Google Sheets storage).
+3. Before the first start, place **both** JSON files in that directory. Use the original initial files for a fresh event, or your current backed-up pair when migrating existing records. (Skip if using Google Sheets storage.)
 4. Run `npm start` from the project directory. Configure the HTTPS proxy and `TRUST_PROXY` to match the host.
 5. Test RSVP and organizer login through the actual HTTPS domain.
 6. Verify the same records remain after a restart and a redeploy.
+
+### Vercel
+
+Vercel's filesystem doesn't persist, so this only works with **Google Sheets storage configured** (above) — `data/*.json` will not survive a redeploy or even a quiet container restart there.
+
+1. Push this repo to GitHub and import it into Vercel ([vercel.com/new](https://vercel.com/new)), or run `vercel` from the project directory with the [Vercel CLI](https://vercel.com/docs/cli).
+2. In the project's **Settings → Environment Variables**, add: `ADMIN_PASSWORD`, `SESSION_SECRET`, `NODE_ENV=production`, `APP_ORIGIN` (your `https://your-project.vercel.app` URL, or custom domain), `TRUST_PROXY=1`, `GOOGLE_SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_JSON_BASE64`.
+3. Deploy. Vercel serves everything in `public/` as static files directly and routes `/api/*` to the function in `api/index.js` (see `vercel.json`).
+4. Visit the deployed URL's `/index.html`, `/RSVP.html`, `/Guests.html`, `/Responses.html`, submit a test RSVP, and confirm it appears in the Google Sheet.
 
 Deployments must keep the existing persistent data directory; do not copy the initial JSON files over live records. The server serves only approved pages and media, and does not expose raw storage or server files.
 
