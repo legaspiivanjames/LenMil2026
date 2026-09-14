@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Style+Script&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FBF8F1; }
+  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  a { color: #145A52; text-decoration: none; }
+  a:hover { color: #70513D; }
+  @keyframes omBreathe { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-9px) } }
+  @keyframes omDown { 0% { transform: translateY(-2px); opacity: .25 } 50% { transform: translateY(6px); opacity: 1 } 100% { transform: translateY(-2px); opacity: .25 } }
+  @keyframes omGlow { 0%,100% { opacity: .45 } 50% { opacity: .85 } }
+</style>
+</helmet>
+
+<div style="position: relative; overflow: hidden; background-color: #FBF8F1; background-image: url('assets/paper.png'); background-size: 860px auto; background-repeat: repeat; font-family: 'EB Garamond', Garamond, serif; color: #2B3B36;">
+
+  <!-- ══ HERO ══ -->
+  <section data-screen-label="Hero" style="position: relative; overflow: hidden; padding: 26px 16px 64px;">
+    <img src="assets/gold-roses.png" alt="" data-drift="-0.10" data-tilt="4" style="position: absolute; top: 10px; right: max(-56px, -12vw); width: min(232px, 42vw); opacity: .8; pointer-events: none; z-index: 3;" />
+    <img src="assets/gold-peony.png" alt="" data-drift="0.14" data-tilt="-6" style="position: absolute; bottom: 40px; left: max(-54px, -12vw); width: min(190px, 34vw); opacity: .7; pointer-events: none; z-index: 3;" />
+
+    <div style="position: relative; max-width: 620px; margin: 0 auto;">
+      <div data-reveal="scale" style="position: relative; background: #145A52; border-radius: 50% 50% 10px 10px / 30% 30% 10px 10px; padding: 84px 26px 52px; box-shadow: 0 28px 70px -34px rgba(11,53,47,.65); overflow: hidden;">
+        <div style="position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 0%, rgba(201,169,97,.16), rgba(201,169,97,0) 62%); pointer-events: none;"></div>
+
+        <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center;">
+          <p data-reveal="down" style="margin: 0; font-size: 19px; font-style: italic; font-weight: 500; color: #F2EBD8; letter-spacing: .04em;">Mape &amp; Legaspi</p>
+
+          <h1 data-reveal="left" style="margin: 26px 0 0; font-family: 'Style Script', cursive; font-weight: 400; font-size: clamp(56px, 15vw, 92px); line-height: .96; color: #F6F0DE; text-shadow: 0 2px 18px rgba(0,0,0,.18);">Reymil</h1>
+
+          <div data-reveal="scale" style="display: flex; align-items: center; gap: 14px; margin: 10px 0 4px;">
+            <span style="display: block; width: 44px; height: 1px; background: linear-gradient(90deg, rgba(201,169,97,0), #C9A961);"></span>
+            <span style="font-size: 14px; letter-spacing: .42em; color: #D9C79A; padding-left: .42em;">AND</span>
+            <span style="display: block; width: 44px; height: 1px; background: linear-gradient(270deg, rgba(201,169,97,0), #C9A961);"></span>
+          </div>
+
+          <h1 data-reveal="right" style="margin: 0; font-family: 'Style Script', cursive; font-weight: 400; font-size: clamp(56px, 15vw, 92px); line-height: .96; color: #F6F0DE; text-shadow: 0 2px 18px rgba(0,0,0,.18);">Aira</h1>
+
+          <p data-reveal="up" style="margin: 34px 0 0; max-width: 30ch; font-size: 17px; font-style: italic; line-height: 1.62; color: #CFDCD5; text-wrap: pretty;">Join us to celebrate the moment when love becomes a promise for eternity</p>
+
+          <div data-reveal="up" style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 38px; width: 100%;">
+            <span style="font-size: 13px; letter-spacing: .38em; color: #D9C79A; padding-left: .38em;">NOVEMBER</span>
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; width: 100%; max-width: 420px;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+                <span style="font-size: 12px; letter-spacing: .3em; color: #F2EBD8; padding-left: .3em;">FRIDAY</span>
+                <span style="display: block; width: 100%; height: 1px; background: #C9A961; opacity: .75;"></span>
+              </div>
+              <span style="font-size: 46px; line-height: 1; color: #F6F0DE; font-weight: 500;">20</span>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+                <span style="font-size: 12px; letter-spacing: .3em; color: #F2EBD8; padding-left: .3em;">12:00 PM</span>
+                <span style="display: block; width: 100%; height: 1px; background: #C9A961; opacity: .75;"></span>
+              </div>
+            </div>
+            <span style="font-size: 14px; letter-spacing: .34em; color: #D9C79A; padding-left: .34em;">2026</span>
+          </div>
+
+          <div data-reveal="up" style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: 34px;">
+            <span style="font-size: 12px; letter-spacing: .22em; color: #F2EBD8; line-height: 1.7; padding-left: .22em;">ST. JOSEPH THE WORKER PARISH,</span>
+            <span style="font-size: 12px; letter-spacing: .22em; color: #CFDCD5; line-height: 1.7; padding-left: .22em;">SAN JOSE DEL MONTE, BULACAN</span>
+          </div>
+        </div>
+      </div>
+
+      <img src="assets/bouquet-white.png" alt="" data-drift="0.06" data-tilt="2" style="position: absolute; top: -14px; left: max(-62px, -13vw); width: min(216px, 34vw); pointer-events: none; z-index: 4; filter: drop-shadow(0 12px 22px rgba(20,60,50,.18));" />
+      <img src="assets/bouquet-white.png" alt="" data-drift="-0.07" data-tilt="-3" style="position: absolute; bottom: -30px; right: max(-54px, -12vw); width: min(168px, 30vw); transform: scaleX(-1); pointer-events: none; z-index: 4; filter: drop-shadow(0 12px 22px rgba(20,60,50,.18));" />
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 54px auto 0; position: relative; z-index: 5;">
+      <span style="font-size: 11px; letter-spacing: .32em; color: #3F5750; padding-left: .32em;">SCROLL</span>
+      <span style="display: block; width: 1px; height: 34px; background: linear-gradient(180deg, #C9A961, rgba(201,169,97,0)); animation: omDown 2.6s ease-in-out infinite;"></span>
+    </div>
+  </section>
+
+  <!-- ══ COUNTDOWN ══ -->
+  <sc-if value="{{ showCountdown }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Countdown" style="position: relative; overflow: hidden; padding: 18px 16px 76px;">
+    <img src="assets/gold-roses-b.png" alt="" data-drift="0.16" data-tilt="-5" style="position: absolute; top: 30px; left: max(-92px, -20vw); width: min(250px, 42vw); opacity: .5; pointer-events: none;" />
+    <div style="position: relative; max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 26px;">
+      <div data-reveal="scale" style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
+        <span style="display: block; width: 9px; height: 9px; background: #C9A961; transform: rotate(45deg); margin-bottom: 2px;"></span>
+        <p style="margin: 0; font-size: 12px; letter-spacing: .34em; color: #3F5750; padding-left: .34em;">UNTIL WE SAY I DO</p>
+      </div>
+      <div data-reveal="up" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 460px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 4px 16px; background: rgba(20,90,82,.055); border-top: 1px solid rgba(201,169,97,.55);">
+          <span style="font-size: clamp(30px, 8vw, 42px); line-height: 1; color: #145A52; font-weight: 500;">{{ cdDays }}</span>
+          <span style="font-size: 10px; letter-spacing: .26em; color: #3F5750; padding-left: .26em;">DAYS</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 4px 16px; background: rgba(20,90,82,.055); border-top: 1px solid rgba(201,169,97,.55);">
+          <span style="font-size: clamp(30px, 8vw, 42px); line-height: 1; color: #145A52; font-weight: 500;">{{ cdHours }}</span>
+          <span style="font-size: 10px; letter-spacing: .26em; color: #3F5750; padding-left: .26em;">HOURS</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 4px 16px; background: rgba(20,90,82,.055); border-top: 1px solid rgba(201,169,97,.55);">
+          <span style="font-size: clamp(30px, 8vw, 42px); line-height: 1; color: #145A52; font-weight: 500;">{{ cdMins }}</span>
+          <span style="font-size: 10px; letter-spacing: .26em; color: #3F5750; padding-left: .26em;">MINUTES</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 4px 16px; background: rgba(20,90,82,.055); border-top: 1px solid rgba(201,169,97,.55);">
+          <span style="font-size: clamp(30px, 8vw, 42px); line-height: 1; color: #145A52; font-weight: 500;">{{ cdSecs }}</span>
+          <span style="font-size: 10px; letter-spacing: .26em; color: #3F5750; padding-left: .26em;">SECONDS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <!-- ══ ENTOURAGE ══ -->
+  <section data-screen-label="Entourage" style="position: relative; overflow: hidden; padding: 0 16px 78px;">
+    <img src="assets/gold-peony.png" alt="" data-drift="-0.13" data-tilt="7" style="position: absolute; top: 120px; right: max(-66px, -14vw); width: min(200px, 36vw); opacity: .55; pointer-events: none; z-index: 3;" />
+    <div style="position: relative; max-width: 620px; margin: 0 auto;">
+      <div data-reveal="scale" style="position: relative; background: #145A52; border-radius: 26px 26px 10px 10px; padding: 48px 20px 44px; box-shadow: 0 26px 64px -36px rgba(11,53,47,.6); overflow: hidden;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;">
+          <p data-reveal="down" style="margin: 0; font-size: 17px; font-style: italic; font-weight: 500; color: #F2EBD8;">Reymil &amp; Aira</p>
+          <h2 data-reveal="up" style="margin: 8px 0 0; font-size: clamp(26px, 7vw, 36px); font-weight: 500; letter-spacing: .22em; color: #F6F0DE; padding-left: .22em;">ENTOURAGE</h2>
+          <span style="display: block; width: 78px; height: 1px; background: linear-gradient(90deg, rgba(201,169,97,0), #C9A961, rgba(201,169,97,0)); margin-top: 14px;"></span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 34px;">
+
+          <div data-reveal="left">
+            <button type="button" onClick="{{ tParents }}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 46px; padding: 14px; background: #F5E1C5; border: 0; border-radius: 3px; cursor: pointer; font-family: inherit;">
+              <span style="font-size: 11px; letter-spacing: .22em; color: #145A52; font-weight: 600; padding-left: .22em;">PARENTS</span>
+              <span style="font-size: 11px; color: #145A52;">{{ mParents }}</span>
+            </button>
+            <sc-if value="{{ oParents }}" hint-placeholder-val="{{ true }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; padding: 20px 6px 8px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; margin-bottom: 3px; padding-left: .2em;">OF THE GROOM</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Reynaldo S. Mape</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Maria Brenda N. Maestre</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Emilia V. Mape &#8224;</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; margin-bottom: 3px; padding-left: .2em;">OF THE BRIDE</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Celedonio R. Legaspi &#8224;</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Dolores B. Legaspi</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div data-reveal="right">
+            <button type="button" onClick="{{ tPrincipal }}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 46px; padding: 14px; background: #F5E1C5; border: 0; border-radius: 3px; cursor: pointer; font-family: inherit;">
+              <span style="font-size: 11px; letter-spacing: .22em; color: #145A52; font-weight: 600; padding-left: .22em;">PRINCIPAL SPONSORS</span>
+              <span style="font-size: 11px; color: #145A52;">{{ mPrincipal }}</span>
+            </button>
+            <sc-if value="{{ oPrincipal }}" hint-placeholder-val="{{ true }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; padding: 20px 6px 8px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mr. Ronald Benedicto</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Engr. Teofilo Florentin Jr.</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mr. Ricky Antonio</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mr. Florencio Legaspi</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mr. Peter Demetrio</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mr. Jayson De Chavez</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mrs. Rowena Benedicto</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mrs. Merlyn Florentin</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mrs. __ Antonio</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Mrs. Arsenia Legaspi</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Ms. Mona Lisa Benedicto</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Ms. Mary Jane Delfin</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div data-reveal="left">
+            <button type="button" onClick="{{ tSecondary }}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 46px; padding: 14px; background: #F5E1C5; border: 0; border-radius: 3px; cursor: pointer; font-family: inherit;">
+              <span style="font-size: 11px; letter-spacing: .22em; color: #145A52; font-weight: 600; padding-left: .22em;">SECONDARY SPONSORS</span>
+              <span style="font-size: 11px; color: #145A52;">{{ mSecondary }}</span>
+            </button>
+            <sc-if value="{{ oSecondary }}" hint-placeholder-val="{{ true }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; padding: 20px 6px 8px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Aldrin John Bueno</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Edrem John Vacnot</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">John Jade Navarro</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Joey Catahan</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Angela Marie Francisco</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Anna Marie Francisco</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Allaine Frances Lasco</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div data-reveal="right">
+            <button type="button" onClick="{{ tHonor }}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 46px; padding: 14px; background: #F5E1C5; border: 0; border-radius: 3px; cursor: pointer; font-family: inherit;">
+              <span style="font-size: 11px; letter-spacing: .22em; color: #145A52; font-weight: 600; padding-left: .22em;">BEST MEN &amp; MAID OF HONOR</span>
+              <span style="font-size: 11px; color: #145A52;">{{ mHonor }}</span>
+            </button>
+            <sc-if value="{{ oHonor }}" hint-placeholder-val="{{ true }}">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; padding: 20px 6px 8px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; margin-bottom: 3px; padding-left: .2em;">BEST MEN</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Raymond L. Mape</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Reynaldo L. Mape Jr.</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; margin-bottom: 3px; padding-left: .2em;">MAID OF HONOR</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Louise Ann B. Legaspi</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div data-reveal="left">
+            <button type="button" onClick="{{ tBearers }}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 46px; padding: 14px; background: #F5E1C5; border: 0; border-radius: 3px; cursor: pointer; font-family: inherit;">
+              <span style="font-size: 11px; letter-spacing: .22em; color: #145A52; font-weight: 600; padding-left: .22em;">BEARERS</span>
+              <span style="font-size: 11px; color: #145A52;">{{ mBearers }}</span>
+            </button>
+            <sc-if value="{{ oBearers }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px 6px 8px; max-width: 400px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: 74px 1fr; align-items: baseline; gap: 12px;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; text-align: right; padding-left: .2em;">BIBLE</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Johann C. Mape</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 74px 1fr; align-items: baseline; gap: 12px;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; text-align: right; padding-left: .2em;">COINS</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Gemima C. Mape</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 74px 1fr; align-items: baseline; gap: 12px;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; text-align: right; padding-left: .2em;">RING</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Sixto Angelo B. Francisco</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 74px 1fr; align-items: baseline; gap: 12px;">
+                  <span style="font-size: 10px; letter-spacing: .2em; color: #F5E1C5; text-align: right; padding-left: .2em;">BANNER</span>
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Deia Rae V. Mape &amp; Deborah V. Mape</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+        </div>
+      </div>
+      <img src="assets/bouquet-white.png" alt="" data-drift="0.09" data-tilt="-4" style="position: absolute; bottom: -42px; left: max(-56px, -12vw); width: min(176px, 32vw); pointer-events: none; z-index: 4; filter: drop-shadow(0 12px 22px rgba(20,60,50,.18));" />
+    </div>
+  </section>
+
+  <!-- ══ TIMELINE ══ -->
+  <section data-screen-label="Timeline" style="position: relative; overflow: hidden; padding: 34px 16px 78px;">
+    <img src="assets/gold-roses.png" alt="" data-drift="0.15" data-tilt="-4" style="position: absolute; top: 60px; left: max(-104px, -22vw); width: min(268px, 46vw); opacity: .45; pointer-events: none; transform: scaleX(-1);" />
+    <div style="position: relative; max-width: 620px; margin: 0 auto;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+        <div data-reveal="scale" style="line-height: 0; padding: 3px 0;"><span style="display: block; width: 9px; height: 9px; background: #C9A961; transform: rotate(45deg);"></span></div>
+        <h2 data-reveal="up" style="margin: 6px 0 0; font-size: clamp(24px, 6.6vw, 34px); font-weight: 500; letter-spacing: .24em; color: #145A52; padding-left: .24em;">TIMELINE</h2>
+        <p data-reveal="up" style="margin: 0; font-size: 16px; font-style: italic; color: #2F4A43;">the order of our day</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0; margin-top: 40px; position: relative; padding-left: 4px;">
+        <span style="position: absolute; left: 95px; top: 10px; bottom: 22px; width: 1px; background: linear-gradient(180deg, rgba(201,169,97,0), #C9A961 12%, #C9A961 88%, rgba(201,169,97,0));"></span>
+
+        <div data-reveal="right" style="display: grid; grid-template-columns: 74px 1fr; gap: 34px; padding-bottom: 30px;">
+          <span style="font-size: 12px; letter-spacing: .1em; color: #70513D; text-align: right; padding-top: 3px; font-weight: 600;">12:30 PM</span>
+          <div style="display: flex; flex-direction: column; gap: 4px; position: relative;">
+            <span style="position: absolute; left: -21.5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #FBF8F1; border: 1px solid #C9A961;"></span>
+            <span style="font-size: 19px; color: #145A52; font-weight: 500;">Procession</span>
+          </div>
+        </div>
+
+        <div data-reveal="right" style="display: grid; grid-template-columns: 74px 1fr; gap: 34px; padding-bottom: 30px;">
+          <span style="font-size: 12px; letter-spacing: .1em; color: #70513D; text-align: right; padding-top: 3px; font-weight: 600;">01:00 PM</span>
+          <div style="display: flex; flex-direction: column; gap: 8px; position: relative;">
+            <span style="position: absolute; left: -21.5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #C9A961;"></span>
+            <span style="font-size: 19px; color: #145A52; font-weight: 500;">Wedding Ceremony</span>
+            <span style="font-size: 11px; letter-spacing: .16em; color: #2F4A43; padding-left: .16em;">ST. JOSEPH THE WORKER PARISH</span>
+            <span style="font-size: 15px; font-style: italic; color: #3F5750;">San Jose Del Monte, Bulacan</span>
+          </div>
+        </div>
+
+        <div data-reveal="right" style="display: grid; grid-template-columns: 74px 1fr; gap: 34px; padding-bottom: 30px;">
+          <span style="font-size: 12px; letter-spacing: .1em; color: #70513D; text-align: right; padding-top: 3px; font-weight: 600;">02:00 PM</span>
+          <div style="display: flex; flex-direction: column; gap: 8px; position: relative;">
+            <span style="position: absolute; left: -21.5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #C9A961;"></span>
+            <span style="font-size: 19px; color: #145A52; font-weight: 500;">Cocktail Hour</span>
+            <span style="font-size: 11px; letter-spacing: .16em; color: #2F4A43; padding-left: .16em;">EMERALD COURTYARD EVENTS PLACE</span>
+          </div>
+        </div>
+
+        <div data-reveal="right" style="display: grid; grid-template-columns: 74px 1fr; gap: 34px; padding-bottom: 30px;">
+          <span style="font-size: 12px; letter-spacing: .1em; color: #70513D; text-align: right; padding-top: 3px; font-weight: 600;">03:00 PM</span>
+          <div style="display: flex; flex-direction: column; gap: 4px; position: relative;">
+            <span style="position: absolute; left: -21.5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #FBF8F1; border: 1px solid #C9A961;"></span>
+            <span style="font-size: 19px; color: #145A52; font-weight: 500;">Wedding Reception</span>
+          </div>
+        </div>
+
+        <div data-reveal="right" style="display: grid; grid-template-columns: 74px 1fr; gap: 34px; padding-bottom: 30px;">
+          <span style="font-size: 12px; letter-spacing: .1em; color: #70513D; text-align: right; padding-top: 3px; font-weight: 600;">05:00 PM</span>
+          <div style="display: flex; flex-direction: column; gap: 4px; position: relative;">
+            <span style="position: absolute; left: -21.5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #FBF8F1; border: 1px solid #C9A961;"></span>
+            <span style="font-size: 19px; color: #145A52; font-weight: 500;">Dinner</span>
+          </div>
+        </div>
+
+        <div data-reveal="right" style="display: grid; grid-template-columns: 74px 1fr; gap: 34px;">
+          <span style="font-size: 12px; letter-spacing: .1em; color: #70513D; text-align: right; padding-top: 3px; font-weight: 600;">06:00 PM</span>
+          <div style="display: flex; flex-direction: column; gap: 4px; position: relative;">
+            <span style="position: absolute; left: -21.5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #FBF8F1; border: 1px solid #C9A961;"></span>
+            <span style="font-size: 19px; color: #145A52; font-weight: 500;">End of Program</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ VENUES ══ -->
+  <section data-screen-label="Venues" style="position: relative; overflow: hidden; padding: 10px 16px 82px;">
+    <img src="assets/gold-peony.png" alt="" data-drift="-0.12" data-tilt="5" style="position: absolute; bottom: 40px; right: max(-70px, -14vw); width: min(206px, 36vw); opacity: .5; pointer-events: none;" />
+    <div style="position: relative; max-width: 620px; margin: 0 auto;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+        <div data-reveal="scale" style="line-height: 0; padding: 3px 0;"><span style="display: block; width: 9px; height: 9px; background: #C9A961; transform: rotate(45deg);"></span></div>
+        <h2 data-reveal="up" style="margin: 6px 0 0; font-size: clamp(24px, 6.6vw, 34px); font-weight: 500; letter-spacing: .24em; color: #145A52; padding-left: .24em;">WHERE</h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 38px;">
+        <div data-reveal="left" style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 32px 20px 26px; background: rgba(255,255,255,.55); border: 1px solid rgba(201,169,97,.4);">
+          <span style="font-size: 10px; letter-spacing: .26em; color: #70513D; padding-left: .26em;">CEREMONY</span>
+          <span style="font-size: 26px; font-family: 'Style Script', cursive; color: #145A52; line-height: 1.1;">The Parish</span>
+          <span style="font-size: 14px; line-height: 1.6; color: #46584F; letter-spacing: .04em;">St. Joseph the Worker Parish<br />San Jose Del Monte, Bulacan</span>
+          <a href="{{ churchMapUrl }}" target="_blank" rel="noopener" style="margin-top: 6px; display: flex; align-items: center; justify-content: center; min-height: 46px; padding: 12px 24px; border: 1px solid #145A52; color: #145A52; font-size: 11px; letter-spacing: .2em; padding-left: .2em;">OPEN IN MAPS</a>
+        </div>
+        <div data-reveal="right" style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 32px 20px 26px; background: rgba(255,255,255,.55); border: 1px solid rgba(201,169,97,.4);">
+          <span style="font-size: 10px; letter-spacing: .26em; color: #70513D; padding-left: .26em;">RECEPTION</span>
+          <span style="font-size: 26px; font-family: 'Style Script', cursive; color: #145A52; line-height: 1.1;">Emerald Courtyard</span>
+          <span style="font-size: 14px; line-height: 1.6; color: #46584F; letter-spacing: .04em;">Emerald Courtyard Events Place<br />Bulacan</span>
+          <a href="{{ venueMapUrl }}" target="_blank" rel="noopener" style="margin-top: 6px; display: flex; align-items: center; justify-content: center; min-height: 46px; padding: 12px 24px; border: 1px solid #145A52; color: #145A52; font-size: 11px; letter-spacing: .2em; padding-left: .2em;">OPEN IN MAPS</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RSVP ══ -->
+  <section data-screen-label="RSVP" style="position: relative; overflow: hidden; padding: 0 16px 0;">
+    <div style="position: relative; max-width: 620px; margin: 0 auto;">
+      <div data-reveal="scale" style="position: relative; background: #145A52; border-radius: 10px 10px 50% 50% / 10px 10px 26% 26%; padding: 54px 24px 84px; box-shadow: 0 26px 64px -36px rgba(11,53,47,.6); overflow: hidden;">
+        <div style="position: absolute; inset: 0; background: radial-gradient(110% 70% at 50% 100%, rgba(201,169,97,.15), rgba(201,169,97,0) 60%); pointer-events: none;"></div>
+        <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;">
+          <span data-reveal="down" style="font-size: 11px; letter-spacing: .34em; color: #D9C79A; padding-left: .34em;">KINDLY RESPOND</span>
+          <h2 data-reveal="scale" style="margin: 2px 0 0; font-family: 'Style Script', cursive; font-weight: 400; font-size: clamp(42px, 11vw, 62px); line-height: 1; color: #F6F0DE;">RSVP</h2>
+          <p data-reveal="up" style="margin: 8px 0 0; max-width: 34ch; font-size: 16px; line-height: 1.7; color: #CFDCD5; letter-spacing: .03em; text-wrap: pretty;">Please confirm the names of everyone attending by <strong style="color: #F2EBD8; font-weight: 600;">October 20, 2026</strong> so a seat and a plate are waiting just for you.</p>
+          <sc-if value="{{ rsvpReady }}" hint-placeholder-val="{{ true }}">
+            <a data-reveal="up" href="{{ rsvpUrl }}" style="display: flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 14px; padding: 15px 38px; background: #F5E1C5; color: #145A52; font-size: 12px; letter-spacing: .24em; border-radius: 2px; padding-left: calc(38px + .24em);" style-hover="background: #FFF6E4;">SEND OUR RSVP</a>
+          </sc-if>
+          <sc-if value="{{ rsvpPending }}" hint-placeholder-val="{{ false }}">
+            <span data-reveal="up" style="display: flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 14px; padding: 15px 30px; border: 1px dashed rgba(245,225,197,.55); color: #CFDCD5; font-size: 12px; letter-spacing: .2em; border-radius: 2px; padding-left: calc(30px + .2em);">RSVP LINK COMING SOON</span>
+          </sc-if>
+          <p data-reveal="up" style="margin: 10px 0 0; max-width: 32ch; font-size: 13px; font-style: italic; line-height: 1.65; color: #CFDCD5;">We adore your little ones, but we can only accommodate children who are part of the entourage.</p>
+        </div>
+        <img src="assets/bouquet-white.png" alt="" data-drift="0.05" data-tilt="3" style="position: absolute; top: -18px; right: max(-46px, -10vw); width: min(150px, 28vw); opacity: .92; pointer-events: none;" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer data-screen-label="Footer" style="position: relative; overflow: hidden; padding: 60px 16px 64px; text-align: center;">
+    <div data-reveal="up" style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
+      <span style="font-family: 'Style Script', cursive; font-size: 34px; color: #145A52; line-height: 1;">Reymil &amp; Aira</span>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="display: block; width: 30px; height: 1px; background: #C9A961;"></span>
+        <span style="font-size: 11px; letter-spacing: .3em; color: #3F5750; padding-left: .3em;">11 . 20 . 2026</span>
+        <span style="display: block; width: 30px; height: 1px; background: #C9A961;"></span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;rsvpUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Links&quot;},&quot;churchMapUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://maps.app.goo.gl/3rXYCugmTPpLcXFj7&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Links&quot;},&quot;venueMapUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://maps.app.goo.gl/2cvoKGniKuKvrSe86&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Links&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Subtle&quot;,&quot;Elegant&quot;,&quot;Cinematic&quot;],&quot;default&quot;:&quot;Elegant&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;showCountdown&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;entourageOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;}}">
+const TARGET = new Date('2026-11-20T12:00:00+08:00').getTime();
+const TRAVEL = { Subtle: 0.5, Elegant: 1, Cinematic: 1.85 };
+
+class Component extends DCLogic {
+  state = {
+    now: Date.now(),
+    open: { parents: true, principal: true, secondary: true, honor: true, bearers: true }
+  };
+
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
+    if (this.props.entourageOpen === false) {
+      this.setState({ open: { parents: true, principal: false, secondary: false, honor: false, bearers: false } });
+    }
+    this.setupReveal();
+    this.sweep();
+    this.setupDrift();
+    window.addEventListener('load', () => { this.measureDrift(); this.paintDrift(); });
+    document.querySelectorAll('[data-drift]').forEach((img) => {
+      img.addEventListener('load', () => { this.measureDrift(); this.paintDrift(); });
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    if (this.io) this.io.disconnect();
+    if (this.onScroll) window.removeEventListener('scroll', this.onScroll);
+    if (this.raf) cancelAnimationFrame(this.raf);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // only when groups expand/collapse — not on every countdown tick
+    if (prevState && prevState.open === this.state.open) return;
+    this.setupReveal();
+    this.measureDrift();
+  }
+
+  scroller() {
+    const el = document.scrollingElement || document.documentElement;
+    return el;
+  }
+
+  // ── Reveal: elements slide in toward the centre when their section enters view
+  setupReveal() {
+    const mult = TRAVEL[this.props.motion] || 1;
+    const vh = window.innerHeight || 800;
+    if (!this.io) {
+      this.pending = new Set();
+      this.io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) this.land(e.target);
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }
+
+    const nodes = document.querySelectorAll('[data-reveal]:not([data-reveal-ready])');
+    nodes.forEach((el) => {
+      el.dataset.revealReady = '1';
+      const rect = el.getBoundingClientRect();
+      // already on screen at load → leave it painted, no hide-then-show flash
+      if (rect.top < vh * 0.92) return;
+
+      const kind = el.dataset.reveal;
+      const d = 70 * mult;
+      const from = {
+        left: 'translate3d(' + -d + 'px,14px,0)',
+        right: 'translate3d(' + d + 'px,14px,0)',
+        up: 'translate3d(0,' + d * 0.62 + 'px,0)',
+        down: 'translate3d(0,' + -d * 0.5 + 'px,0)',
+        scale: 'translate3d(0,' + d * 0.45 + 'px,0) scale(' + (1 - 0.045 * mult) + ')'
+      }[kind] || 'translate3d(0,' + d * 0.62 + 'px,0)';
+
+      el.style.willChange = 'transform, opacity';
+      el.style.transform = from;
+      el.style.opacity = '0';
+      el.style.filter = 'blur(' + (2.5 * mult).toFixed(1) + 'px)';
+      el.style.transition = 'transform ' + (0.9 + 0.22 * mult).toFixed(2) + 's cubic-bezier(.19,.82,.2,1), opacity ' + (0.8 + 0.2 * mult).toFixed(2) + 's ease-out, filter .7s ease-out';
+      this.pending.add(el);
+      this.io.observe(el);
+    });
+
+    // stagger siblings that share a parent
+    const groups = new Map();
+    document.querySelectorAll('[data-reveal][data-reveal-ready]').forEach((el) => {
+      if (el.dataset.revealDelay) return;
+      const p = el.parentElement;
+      const arr = groups.get(p) || [];
+      arr.push(el);
+      groups.set(p, arr);
+    });
+    groups.forEach((arr) => {
+      if (arr.length < 2) return;
+      arr.forEach((el, i) => { el.dataset.revealDelay = String(Math.min(i * 90, 450)); });
+    });
+  }
+
+  land(el) {
+    el.style.transitionDelay = Number(el.dataset.revealDelay || 0) + 'ms';
+    el.style.transform = 'none';
+    el.style.opacity = '1';
+    el.style.filter = 'none';
+    if (this.pending) this.pending.delete(el);
+    this.io.unobserve(el);
+  }
+
+  // safety sweep: instant jumps (anchors, End key) can skip the observer entirely
+  sweep() {
+    if (!this.pending || !this.pending.size) return;
+    const vh = window.innerHeight || 800;
+    for (const el of [...this.pending]) {
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * 0.94) this.land(el);
+    }
+  }
+
+  // ── Drift: flowers follow the scroll at their own speed
+  setupDrift() {
+    this.measureDrift();
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => {
+        this.raf = null;
+        this.paintDrift();
+        this.sweep();
+      });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', () => { this.measureDrift(); this.paintDrift(); }, { passive: true });
+    this.paintDrift();
+  }
+
+  measureDrift() {
+    const sy = this.scroller().scrollTop || window.scrollY || 0;
+    this.drifters = [...document.querySelectorAll('[data-drift]')].map((el) => {
+      const r = el.getBoundingClientRect();
+      return {
+        el,
+        speed: parseFloat(el.dataset.drift) || 0,
+        tilt: parseFloat(el.dataset.tilt) || 0,
+        mid: r.top + sy + r.height / 2,
+        flip: /scaleX\(-1\)/.test(el.getAttribute('style') || '')
+      };
+    });
+  }
+
+  paintDrift() {
+    if (!this.drifters) return;
+    const sy = this.scroller().scrollTop || window.scrollY || 0;
+    const vh = window.innerHeight || 800;
+    const mult = TRAVEL[this.props.motion] || 1;
+    for (const d of this.drifters) {
+      const rel = (sy + vh / 2 - d.mid) / vh; // ~ -1 .. 1
+      const y = rel * d.speed * 160 * mult;
+      const rot = rel * d.tilt * mult;
+      d.el.style.transform = (d.flip ? 'scaleX(-1) ' : '') + 'translate3d(0,' + y.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
+    }
+  }
+
+  toggle(key) {
+    return () => this.setState((s) => ({ open: Object.assign({}, s.open, { [key]: !s.open[key] }) }));
+  }
+
+  renderVals() {
+    const open = this.state.open;
+    const mark = (k) => (open[k] ? '\u2212' : '+');
+    let ms = Math.max(0, TARGET - this.state.now);
+    const day = 86400000;
+    const days = Math.floor(ms / day);
+    const hours = Math.floor((ms % day) / 3600000);
+    const mins = Math.floor((ms % 3600000) / 60000);
+    const secs = Math.floor((ms % 60000) / 1000);
+    const pad = (n) => String(n).padStart(2, '0');
+
+    return {
+      showCountdown: this.props.showCountdown !== false,
+      rsvpUrl: (this.props.rsvpUrl || '').trim() || './RSVP.html',
+      rsvpReady: true,
+      rsvpPending: false,
+      churchMapUrl: this.props.churchMapUrl || 'https://maps.app.goo.gl/3rXYCugmTPpLcXFj7',
+      venueMapUrl: this.props.venueMapUrl || 'https://maps.app.goo.gl/2cvoKGniKuKvrSe86',
+      cdDays: String(days),
+      cdHours: pad(hours),
+      cdMins: pad(mins),
+      cdSecs: pad(secs),
+      oParents: open.parents, oPrincipal: open.principal, oSecondary: open.secondary, oHonor: open.honor, oBearers: open.bearers,
+      mParents: mark('parents'), mPrincipal: mark('principal'), mSecondary: mark('secondary'), mHonor: mark('honor'), mBearers: mark('bearers'),
+      tParents: this.toggle('parents'), tPrincipal: this.toggle('principal'), tSecondary: this.toggle('secondary'), tHonor: this.toggle('honor'), tBearers: this.toggle('bearers')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

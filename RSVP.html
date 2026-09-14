@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSVP | Reymil &amp; Aira</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Style+Script&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FBF8F1; }
+  body { -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #145A52; text-decoration: none; }
+  a:hover { color: #70513D; }
+  input { font-family: inherit; }
+  input::placeholder { color: #8D9B94; }
+  button:disabled { cursor: not-allowed !important; opacity: .6; }
+  #rsvp-panel p, #rsvp-suggest li { overflow-wrap: anywhere; }
+  #rsvp-panel button { max-width: 100%; white-space: normal; }
+  @media (max-width: 420px) {
+    #rsvp-panel { padding-left: 20px !important; padding-right: 20px !important; }
+    #rsvp-panel .confirm-button { padding: 14px 18px !important; letter-spacing: 0 !important; }
+  }
+  @keyframes omRise { from { opacity: 0; transform: translate3d(0, 18px, 0) } to { opacity: 1; transform: none } }
+</style>
+</helmet>
+
+<div style="position: relative; min-height: 100vh; overflow: hidden; background-color: #FBF8F1; background-image: url('assets/paper.png'); background-size: 860px auto; background-repeat: repeat; font-family: 'EB Garamond', Garamond, serif; color: #2F4A43; padding: 28px 16px 72px; display: flex; flex-direction: column; align-items: center;">
+
+  <img src="assets/gold-roses.png" alt="" style="position: absolute; top: 6px; right: max(-64px, -13vw); width: min(240px, 42vw); opacity: .55; pointer-events: none;" />
+  <img src="assets/gold-peony.png" alt="" style="position: absolute; bottom: 24px; left: max(-58px, -12vw); width: min(196px, 34vw); opacity: .45; pointer-events: none;" />
+
+  <div style="position: relative; width: 100%; max-width: 560px; display: flex; flex-direction: column; align-items: center;">
+
+    <div id="rsvp-panel" style="position: relative; width: 100%; background: #145A52; border-radius: 50% 50% 10px 10px / clamp(88px, 18vw, 116px) clamp(88px, 18vw, 116px) 10px 10px; padding: 76px 26px 52px; box-shadow: 0 28px 70px -34px rgba(11,53,47,.65); overflow: visible;">
+      <div style="position: absolute; inset: 0; background: radial-gradient(120% 80% at 50% 0%, rgba(201,169,97,.16), rgba(201,169,97,0) 62%); pointer-events: none;"></div>
+
+      <div style="position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <span style="font-size: 11px; letter-spacing: .34em; color: #D9C79A; padding-left: .34em;">KINDLY RESPOND</span>
+        <h1 style="margin: 6px 0 0; font-family: 'Style Script', cursive; font-weight: 400; font-size: clamp(46px, 13vw, 68px); line-height: 1; color: #F6F0DE;">RSVP</h1>
+        <div style="display: flex; align-items: center; gap: 12px; margin: 16px 0 0;">
+          <span style="display: block; width: 34px; height: 1px; background: linear-gradient(90deg, rgba(201,169,97,0), #C9A961);"></span>
+          <span style="font-size: 11px; letter-spacing: .26em; color: #F5E1C5; padding-left: .26em;">REYMIL &amp; AIRA</span>
+          <span style="display: block; width: 34px; height: 1px; background: linear-gradient(270deg, rgba(201,169,97,0), #C9A961);"></span>
+        </div>
+
+        <!-- ── STEP 1 · find your name ── -->
+        <sc-if value="{{ stageSearch }}" hint-placeholder-val="{{ true }}">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 34px;">
+            <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.7; color: #CFDCD5; text-wrap: pretty;">Please find your name below, then tell us who is coming with you.</p>
+
+            <div style="position: relative; width: 100%; max-width: 400px; text-align: left;">
+              <label for="rsvp-name" style="display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: .24em; color: #F5E1C5; padding-left: .24em;">NAME</label>
+              <input id="rsvp-name" type="text" autocomplete="off" placeholder="{{ namePlaceholder }}" value="{{ query }}" onChange="{{ onQuery }}" onKeyDown="{{ onKey }}" onFocus="{{ onFocus }}" disabled="{{ guestInputDisabled }}" role="combobox" aria-autocomplete="list" aria-expanded="{{ listOpen }}" aria-activedescendant="{{ activeOption }}" aria-controls="rsvp-suggest" style="width: 100%; min-height: 50px; padding: 12px 16px; font-size: 17px; color: #17322C; background: #FBF8F1; border: 1px solid #C9A961; border-radius: 2px; outline: none;" />
+
+              <sc-if value="{{ loadingGuests }}" hint-placeholder-val="{{ false }}">
+                <p role="status" style="margin: 10px 0 0; font-size: 14px; font-style: italic; line-height: 1.6; color: #CFDCD5;">Loading guest list...</p>
+              </sc-if>
+
+              <sc-if value="{{ guestLoadError }}" hint-placeholder-val="{{ false }}">
+                <p style="margin: 10px 0 0; font-size: 14px; font-style: italic; line-height: 1.6; color: #CFDCD5;">{{ guestLoadError }}</p>
+                <button type="button" onClick="{{ retryGuests }}" style="min-height: 44px; background: none; border: 0; color: #F5E1C5; text-decoration: underline; cursor: pointer;">Try again</button>
+              </sc-if>
+
+              <sc-if value="{{ showList }}" hint-placeholder-val="{{ false }}">
+                <ul id="rsvp-suggest" role="listbox" aria-label="Matching guests" style="position: absolute; z-index: 20; top: calc(100% + 6px); left: 0; right: 0; max-height: 320px; overflow-y: auto; margin: 0; padding: 4px; list-style: none; background: #FBF8F1; border: 1px solid #C9A961; border-radius: 2px; box-shadow: 0 16px 34px -22px rgba(11,53,47,.75);">
+                  <sc-for list="{{ matches }}" as="m" hint-placeholder-count="2">
+                    <li id="{{ m.id }}" role="option" aria-selected="{{ m.active }}" aria-disabled="{{ m.disabled }}" onClick="{{ m.pick }}" onMouseEnter="{{ m.hover }}" style="display: flex; flex-direction: column; align-items: flex-start; min-height: 46px; padding: 10px 12px; font-size: 17px; color: #17322C; cursor: {{ m.cursor }}; opacity: {{ m.opacity }}; border-radius: 2px; background: {{ m.bg }};">
+                      <span>{{ m.name }}</span>
+                      <sc-if value="{{ m.responded }}"><span style="font-size: 13px;">Already responded</span></sc-if>
+                    </li>
+                  </sc-for>
+                </ul>
+              </sc-if>
+
+              <sc-if value="{{ showNoMatch }}" hint-placeholder-val="{{ false }}">
+                <p style="margin: 10px 0 0; font-size: 14px; font-style: italic; line-height: 1.6; color: #CFDCD5;">We can’t find that name on our list. Please check the spelling, or message us and we’ll sort it out.</p>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ── STEP 2 · your party ── -->
+        <sc-if value="{{ stageForm }}" hint-placeholder-val="{{ false }}">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 32px; animation: omRise .5s cubic-bezier(.19,.82,.2,1) both;">
+            <span style="font-size: 11px; letter-spacing: .24em; color: #F5E1C5; padding-left: .24em;">NAME</span>
+            <p style="margin: 2px 0 0; font-size: clamp(22px, 6vw, 28px); font-weight: 500; letter-spacing: .02em; color: #F6F0DE; line-height: 1.25;">{{ guestName }}</p>
+
+            <div style="display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 8px 18px; border: 1px solid rgba(245,225,197,.45); border-radius: 2px;">
+              <span style="font-size: 12px; letter-spacing: .16em; color: #F5E1C5; padding-left: .16em;">ADDITIONAL GUESTS ALLOWED</span>
+              <span style="font-size: 19px; font-weight: 600; color: #F6F0DE;">{{ extraAllowed }}</span>
+            </div>
+
+            <sc-if value="{{ hasExtras }}" hint-placeholder-val="{{ true }}">
+              <div style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 18px; margin-top: 30px; text-align: left;">
+                <p style="margin: 0; font-size: 15px; font-style: italic; color: #CFDCD5; text-align: center;">Please enter the names of your additional guests.</p>
+                <sc-for list="{{ extras }}" as="g" hint-placeholder-count="2">
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label for="{{ g.id }}" style="font-size: 11px; letter-spacing: .22em; color: #F5E1C5; padding-left: .22em;">{{ g.label }}</label>
+                    <input id="{{ g.id }}" type="text" autocomplete="off" placeholder="Full name" value="{{ g.value }}" onChange="{{ g.onInput }}" style="width: 100%; min-height: 50px; padding: 12px 16px; font-size: 17px; color: #17322C; background: #FBF8F1; border: 1px solid #C9A961; border-radius: 2px; outline: none;" />
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ noExtras }}" hint-placeholder-val="{{ false }}">
+              <p style="margin: 26px 0 0; max-width: 30ch; font-size: 15px; font-style: italic; line-height: 1.65; color: #CFDCD5;">This invitation has one seat reserved in your honour.</p>
+            </sc-if>
+
+            <button class="confirm-button" type="button" onClick="{{ submit }}" disabled="{{ submitDisabled }}" style="display: flex; align-items: center; justify-content: center; min-height: 50px; margin-top: 34px; padding: 15px 38px; background: #F5E1C5; color: #145A52; border: 0; border-radius: 2px; font-family: inherit; font-size: 12px; letter-spacing: .24em; padding-left: calc(38px + .24em); cursor: pointer;" style-hover="background: #FFF6E4;">{{ submitLabel }}</button>
+
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; margin-top: 20px;">
+              <button type="button" onClick="{{ reset }}" disabled="{{ sending }}" style="min-height: 44px; padding: 8px 4px; background: none; border: 0; color: #CFDCD5; font-family: inherit; font-size: 14px; font-style: italic; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">Not you? Change name</button>
+              <sc-if value="{{ allowRegrets }}" hint-placeholder-val="{{ true }}">
+                <button type="button" onClick="{{ decline }}" disabled="{{ submitDisabled }}" style="min-height: 44px; padding: 8px 4px; background: none; border: 0; color: #CFDCD5; font-family: inherit; font-size: 14px; font-style: italic; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">Sorry, we can’t make it</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ── STEP 3 · confirmation ── -->
+        <sc-if value="{{ sendError }}" hint-placeholder-val="{{ false }}">
+          <p style="margin: 16px 0 0; max-width: 34ch; font-size: 14px; font-style: italic; line-height: 1.55; color: #F5E1C5; text-align: center;">{{ sendError }}</p>
+        </sc-if>
+
+        <sc-if value="{{ stageDone }}" hint-placeholder-val="{{ false }}">
+          <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 34px; animation: omRise .5s cubic-bezier(.19,.82,.2,1) both;">
+            <span style="display: block; width: 9px; height: 9px; background: #C9A961; transform: rotate(45deg); margin-bottom: 6px;"></span>
+            <p style="margin: 0; font-family: 'Style Script', cursive; font-size: clamp(32px, 9vw, 44px); line-height: 1.1; color: #F6F0DE;">{{ doneTitle }}</p>
+            <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.7; color: #CFDCD5; text-wrap: pretty;">{{ doneBody }}</p>
+            <sc-if value="{{ hasParty }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 12px; padding: 20px 26px; border: 1px solid rgba(245,225,197,.4); border-radius: 2px;">
+                <span style="font-size: 10px; letter-spacing: .24em; color: #F5E1C5; margin-bottom: 6px; padding-left: .24em;">YOUR PARTY</span>
+                <sc-for list="{{ party }}" as="p" hint-placeholder-count="2">
+                  <span style="font-size: 16px; letter-spacing: .06em; color: #F6F0DE;">{{ p.name }}</span>
+                </sc-for>
+              </div>
+            </sc-if>
+            <button type="button" onClick="{{ reset }}" style="min-height: 44px; margin-top: 16px; padding: 8px 4px; background: none; border: 0; color: #CFDCD5; font-family: inherit; font-size: 14px; font-style: italic; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">Send another response</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 40px; text-align: center;">
+      <p style="margin: 0; font-size: 14px; font-style: italic; line-height: 1.65; color: #2F4A43; max-width: 34ch;">Kindly respond by <strong style="font-weight: 600;">{{ deadline }}</strong>. <br/> We can only accommodate children who are part of the entourage.</p>
+      <a href="{{ homeUrl }}" style="min-height: 44px; display: flex; align-items: center; font-size: 11px; letter-spacing: .22em; color: #70513D; padding-left: .22em;">← BACK TO THE INVITATION</a>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"deadline":{"editor":"text","default":"October 20, 2026","tsType":"string","section":"Copy"},"allowRegrets":{"editor":"boolean","default":true,"tsType":"boolean","section":"Copy"},"homeUrl":{"editor":"text","default":"./index.html","tsType":"string","section":"Copy"}}'>
+async function requestRsvp(path, body) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetch(path, {
+      method: body ? 'POST' : 'GET',
+      headers: body ? { 'Content-Type': 'application/json' } : {},
+      body: body ? JSON.stringify(body) : undefined,
+      cache: 'no-store', signal: controller.signal
+    });
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      const error = new Error(data.error || 'Please try again.');
+      error.code = data.code;
+      throw error;
+    }
+    return data;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+class Component extends DCLogic {
+  state = {
+    query: '', touched: false, listOpen: false, cursor: -1,
+    guest: null, extras: [], stage: 'search', attending: true,
+    sending: false, sendError: '', guests: [], guestsLoading: true,
+    guestsError: '', confirmation: null
+  };
+
+  componentDidMount() {
+    this.loadGuests();
+    window.addEventListener('focus', this.refreshGuests);
+  }
+
+  componentWillUnmount() {
+    this._unmounted = true;
+    this._guestLoadId = (this._guestLoadId || 0) + 1;
+    window.removeEventListener('focus', this.refreshGuests);
+  }
+
+  refreshGuests = () => this.loadGuests(true);
+
+  async loadGuests(background = false) {
+    const loadId = (this._guestLoadId || 0) + 1;
+    this._guestLoadId = loadId;
+    if (!background) this.setState({ guestsLoading: true, guestsError: '' });
+    try {
+      const data = await requestRsvp('/api/guests');
+      if (this._unmounted || this._guestLoadId !== loadId) return;
+      this.setState((s) => {
+        const next = {
+          guests: data.guests, guestsLoading: false, cursor: -1,
+          guestsError: data.guests.length ? '' : 'The guest list is not available yet. Please contact us.'
+        };
+        if (s.stage === 'form' && s.guest) {
+          const guest = data.guests.find((g) => g.id === s.guest.id);
+          next.guest = guest || { ...s.guest, unavailable: true };
+          if (guest) {
+            // Keep typed names when the allowance shrinks so the guest can correct their party.
+            next.extras = Array.from({ length: Math.max(s.extras.length, guest.extra) }, (_, i) => s.extras[i] || '');
+          }
+        }
+        return next;
+      });
+    } catch (error) {
+      if (this._unmounted || this._guestLoadId !== loadId) return;
+      this.setState({
+        guestsLoading: false,
+        guestsError: 'We could not load the guest list. Please try again, or contact us.'
+      });
+    }
+  }
+
+  matchList() {
+    const q = this.state.query.trim().toLowerCase();
+    if (!q) return [];
+    const words = q.split(/\s+/);
+    return this.state.guests
+      .filter((g) => words.every((word) => g.name.toLowerCase().includes(word)))
+      .slice(0, 8);
+  }
+
+  onQuery = (event) => this.setState({
+    query: event.target.value, touched: true, listOpen: true, cursor: -1, sendError: ''
+  });
+
+  onFocus = () => {
+    this.setState({ listOpen: true });
+    this.loadGuests(true);
+  };
+
+  onKey = (event) => {
+    const list = this.matchList();
+    if (this.state.guestsLoading || this.state.guestsError) return;
+    const available = list.map((g, i) => g.responded ? -1 : i).filter((i) => i >= 0);
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!available.length) return;
+      const current = available.indexOf(this.state.cursor);
+      const down = event.key === 'ArrowDown';
+      const index = current < 0 ? (down ? 0 : available.length - 1)
+        : (current + (down ? 1 : -1) + available.length) % available.length;
+      this.setState({ listOpen: true, cursor: available[index] });
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      const selected = this.state.cursor >= 0 ? list[this.state.cursor] : available.length === 1 ? list[available[0]] : null;
+      if (selected) this.pick(selected);
+    } else if (event.key === 'Escape') {
+      this.setState({ listOpen: false });
+    }
+  };
+
+  pick(guest) {
+    if (guest.responded || this.state.guestsLoading || this.state.guestsError) return;
+    this.setState({
+      guest, query: guest.name, listOpen: false, stage: 'form',
+      attending: true, extras: Array.from({ length: guest.extra }, () => ''),
+      sendError: '', confirmation: null
+    });
+  }
+
+  setExtra(index, value) {
+    if (this._sending) return;
+    this.setState((s) => {
+      const extras = s.extras.slice();
+      extras[index] = value;
+      return { extras };
+    });
+  }
+
+  reset = () => {
+    if (this._sending) return;
+    this.setState({
+      query: '', touched: false, listOpen: false, cursor: -1,
+      guest: null, extras: [], stage: 'search', attending: true,
+      sending: false, sendError: '', confirmation: null
+    });
+    this.loadGuests(true);
+  };
+
+  async send(attending) {
+    const guest = this.state.guest;
+    if (!guest || this._sending || guest.responded || guest.unavailable) return;
+    const additionalGuests = attending ? this.state.extras.map((name) => name.trim()).filter(Boolean) : [];
+    if (additionalGuests.length > guest.extra) {
+      this.setState({ sendError: 'Please keep your party within the additional guest allowance shown above.' });
+      return;
+    }
+    this._sending = true;
+    this.setState({ sending: true, sendError: '' });
+    try {
+      const data = await requestRsvp('/api/responses', { guestId: guest.id, attending, additionalGuests });
+      if (this._unmounted) return;
+      this.setState((s) => ({
+        sending: false, attending, stage: 'done', confirmation: data.response,
+        guests: s.guests.map((g) => g.id === guest.id ? { ...g, responded: true } : g)
+      }));
+    } catch (error) {
+      if (this._unmounted) return;
+      this.setState({
+        sending: false,
+        sendError: error.code ? error.message : 'We could not confirm your RSVP. Please try again, or contact us.'
+      });
+      if (['ALREADY_RESPONDED', 'ALLOWANCE_CHANGED', 'GUEST_NOT_FOUND'].includes(error.code)) this.loadGuests(true);
+    } finally {
+      this._sending = false;
+    }
+  }
+
+  submit = () => this.send(true);
+  decline = () => this.send(false);
+
+  renderVals() {
+    const s = this.state;
+    const list = this.matchList();
+    const canSearch = !s.guestsLoading && !s.guestsError;
+    const showList = canSearch && s.stage === 'search' && s.listOpen && !!s.query.trim() && list.length > 0;
+    const unavailable = s.guest && (s.guest.responded || s.guest.unavailable);
+    const notice = s.guest && s.guest.responded
+      ? 'We already have a response for this guest. Please contact us to make a change.'
+      : s.guest && s.guest.unavailable ? 'This invitation is no longer available. Please contact us.' : '';
+    return {
+      stageSearch: s.stage === 'search', stageForm: s.stage === 'form', stageDone: s.stage === 'done',
+      query: s.query, onQuery: this.onQuery, onKey: this.onKey, onFocus: this.onFocus,
+      listOpen: showList ? 'true' : 'false',
+      activeOption: s.cursor >= 0 ? 'rsvp-option-' + s.cursor : undefined,
+      loadingGuests: s.guestsLoading, guestLoadError: s.guestsError,
+      guestInputDisabled: s.guestsLoading,
+      namePlaceholder: s.guestsLoading ? 'Loading guest list...' : 'Start typing your name...',
+      retryGuests: () => this.loadGuests(), showList,
+      showNoMatch: canSearch && s.stage === 'search' && s.touched && s.query.trim().length > 1 && !list.length,
+      matches: list.map((g, i) => ({
+        id: 'rsvp-option-' + i, name: g.name, responded: g.responded,
+        disabled: g.responded ? 'true' : 'false',
+        active: i === s.cursor && !g.responded ? 'true' : 'false',
+        bg: i === s.cursor && !g.responded ? '#F1E7D2' : 'transparent',
+        cursor: g.responded ? 'not-allowed' : 'pointer', opacity: g.responded ? '.6' : '1',
+        pick: () => this.pick(g), hover: () => this.setState({ cursor: g.responded ? -1 : i })
+      })),
+      guestName: s.guest ? s.guest.name : '', extraAllowed: s.guest ? String(s.guest.extra) : '0',
+      hasExtras: s.extras.length > 0,
+      noExtras: !!s.guest && s.guest.extra === 0 && !s.extras.length,
+      extras: s.extras.map((value, i) => ({
+        id: 'extra-' + i, label: 'ADDITIONAL GUEST ' + (i + 1), value,
+        onInput: (event) => this.setExtra(i, event.target.value)
+      })),
+      submitLabel: s.sending ? 'SENDING...' : 'CONFIRM OUR ATTENDANCE',
+      sending: s.sending, submitDisabled: !!(s.sending || unavailable),
+      submit: this.submit, decline: this.decline, reset: this.reset,
+      sendError: s.sendError || (s.stage === 'form' ? notice : ''),
+      allowRegrets: this.props.allowRegrets !== false,
+      doneTitle: s.attending ? 'Thank you' : 'We\u2019ll miss you',
+      doneBody: s.attending
+        ? 'Your response is in. A seat and a plate will be waiting. We can\u2019t wait to celebrate with you.'
+        : 'Thank you for letting us know. You\u2019ll be in our thoughts on the day.',
+      hasParty: !!(s.attending && s.confirmation),
+      party: s.attending && s.confirmation
+        ? [s.confirmation.name].concat(s.confirmation.additionalGuests).map((name) => ({ name })) : [],
+      deadline: this.props.deadline || 'October 20, 2026',
+      homeUrl: this.props.homeUrl || './index.html'
+    };
+  }
+}
+</script>
+</body>
+</html>
