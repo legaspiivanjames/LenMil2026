@@ -197,17 +197,24 @@
               <span style="font-size: 11px; color: #145A52;">{{ mSecondary }}</span>
             </button>
             <sc-if value="{{ oSecondary }}" hint-placeholder-val="{{ true }}">
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 22px; padding: 20px 6px 8px;">
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
-                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Aldrin John Bueno <em style="font-style: italic; font-size: 12px; letter-spacing: .04em; color: #C9A961;">— candle</em></span>
-                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">John Jade Navarro <em style="font-style: italic; font-size: 12px; letter-spacing: .04em; color: #C9A961;">— veil</em></span>
-                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Edrem John Vacnot <em style="font-style: italic; font-size: 12px; letter-spacing: .04em; color: #C9A961;">— cord</em></span>
-                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Joey Catahan</span>
-                </div>
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center;">
+              <div style="display: flex; flex-direction: column; gap: 14px; padding: 20px 6px 8px; max-width: 480px; margin: 0 auto;">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; column-gap: 10px; row-gap: 2px;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Aldrin John Bueno</span>
+                  <span style="font-size: 11px; font-style: italic; letter-spacing: .06em; color: #C9A961;">— candle —</span>
                   <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Angela Marie Francisco</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; column-gap: 10px; row-gap: 2px;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">John Jade Navarro</span>
+                  <span style="font-size: 11px; font-style: italic; letter-spacing: .06em; color: #C9A961;">— veil —</span>
                   <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Allaine Frances Lasco</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; column-gap: 10px; row-gap: 2px;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Edrem John Vacnot</span>
+                  <span style="font-size: 11px; font-style: italic; letter-spacing: .06em; color: #C9A961;">— cord —</span>
                   <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Anna Marie Francisco</span>
+                </div>
+                <div style="text-align: center;">
+                  <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Joey Catahan</span>
                 </div>
               </div>
             </sc-if>
