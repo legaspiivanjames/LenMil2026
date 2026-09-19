@@ -37,8 +37,10 @@
   @keyframes omDown { 0% { transform: translateY(-2px); opacity: .25 } 50% { transform: translateY(6px); opacity: 1 } 100% { transform: translateY(-2px); opacity: .25 } }
   @keyframes omGlow { 0%,100% { opacity: .45 } 50% { opacity: .85 } }
   .sponsor-pair { align-items: baseline; row-gap: 2px; }
+  .sponsor-pairs { gap: 14px; }
   @media (max-width: 600px) {
     .sponsor-pair { flex-direction: column; align-items: center; row-gap: 6px; }
+    .sponsor-pairs { gap: 26px; }
   }
 </style>
 </helmet>
@@ -201,7 +203,7 @@
               <span style="font-size: 11px; color: #145A52;">{{ mSecondary }}</span>
             </button>
             <sc-if value="{{ oSecondary }}" hint-placeholder-val="{{ true }}">
-              <div style="display: flex; flex-direction: column; gap: 14px; padding: 20px 6px 8px; max-width: 480px; margin: 0 auto;">
+              <div class="sponsor-pairs" style="display: flex; flex-direction: column; padding: 20px 6px 8px; max-width: 480px; margin: 0 auto;">
                 <div class="sponsor-pair" style="display: flex; flex-wrap: wrap; justify-content: center; column-gap: 10px;">
                   <span style="font-size: 15px; letter-spacing: .1em; color: #F2EBD8;">Aldrin John Bueno</span>
                   <span style="font-size: 11px; font-style: italic; letter-spacing: .06em; color: #C9A961;">— candle —</span>
