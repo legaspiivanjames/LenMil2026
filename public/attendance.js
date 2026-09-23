@@ -37,12 +37,6 @@ document.body.innerHTML = `
         <div class="search">${icon('search')}<label class="sr-only" for="search">Search guests</label>
           <input id="search" type="search" placeholder="Search by name" autocomplete="off">
         </div>
-        <div class="filter"><label for="attendance-filter">Status</label><select id="attendance-filter">
-          <option value="all">All statuses</option>
-          <option value="yes">Attending</option>
-          <option value="no">Not attending</option>
-          <option value="waiting">Awaiting response</option>
-        </select></div>
         <div class="toolbar-actions">
           <button id="export" class="button">${icon('download')}<span>Export CSV</span></button>
           <button id="print" class="button">${icon('printer')}<span>Print</span></button>
@@ -51,7 +45,7 @@ document.body.innerHTML = `
       </div>
       <div class="table-shell" tabindex="0" role="region" aria-label="Attendance table">
         <table class="attendance-table">
-          <thead><tr>${['Guest name', 'Allowed extras', 'RSVP status', 'Party size', 'Additional guests'].map((label) => '<th scope="col">' + label + '</th>').join('')}</tr></thead>
+          <thead><tr>${['Guest name', 'Allowed extras', 'Party size'].map((label) => '<th scope="col">' + label + '</th>').join('')}</tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -128,60 +122,55 @@ function cell(row, text, className = '') {
   return element;
 }
 
-function badge(label, variant) {
-  const element = document.createElement('span');
-  element.className = 'status ' + variant;
-  element.textContent = label;
-  return element;
+function attendingGroups() {
+  return state.rows.filter((row) => row.attending === true);
 }
 
-function statusOf(row) {
-  return row.attending === true ? 'yes' : row.attending === false ? 'no' : 'waiting';
+function visibleGroups(query) {
+  const q = query.trim().toLowerCase();
+  return attendingGroups().filter((row) =>
+    !q || row.name.toLowerCase().includes(q) || row.additionalGuests.some((name) => name.toLowerCase().includes(q))
+  );
+}
+
+function flatten(groups) {
+  const display = [];
+  for (const guest of groups) {
+    display.push({ kind: 'guest', key: guest.id, name: guest.name, extra: guest.extra, partySize: guest.partySize });
+    guest.additionalGuests.forEach((name, i) => display.push({ kind: 'companion', key: guest.id + '-c' + i, name }));
+  }
+  return display;
 }
 
 function renderRows() {
-  const query = $('search').value.trim().toLowerCase();
-  const statusFilter = $('attendance-filter').value;
-  const filtered = state.rows.filter((row) => {
-    const names = [row.name, ...row.additionalGuests].join(' ').toLowerCase();
-    return names.includes(query) && (statusFilter === 'all' || statusFilter === statusOf(row));
-  });
+  const groups = visibleGroups($('search').value);
+  const display = flatten(groups);
   const body = $('rows');
   body.replaceChildren();
-  if (state.loading || !filtered.length) {
+  if (state.loading || !display.length) {
     const row = document.createElement('tr');
-    const content = cell(row, state.loading ? 'Loading...' : state.rows.length ? 'No matching results.' : 'No guests yet.', 'table-message');
-    content.colSpan = 5;
+    const content = cell(row, state.loading ? 'Loading...' : attendingGroups().length ? 'No matching results.' : 'No attending guests yet.', 'table-message');
+    content.colSpan = 3;
     body.append(row);
   } else {
-    for (const item of filtered) {
+    for (const item of display) {
       const row = document.createElement('tr');
-      row.dataset.id = item.id;
-      cell(row, item.name, 'name-cell');
-      cell(row, item.extra, 'number');
-      const statusLabel = item.attending === true ? 'Attending' : item.attending === false ? 'Not attending' : 'Awaiting response';
-      cell(row, badge(statusLabel, statusOf(item)));
-      cell(row, item.attending === null ? '—' : item.partySize, 'number');
-      if (item.attending) {
-        if (item.additionalGuests.length) {
-          const names = document.createElement('ul');
-          names.className = 'companions';
-          for (const name of item.additionalGuests) {
-            const entry = document.createElement('li');
-            entry.textContent = name;
-            names.append(entry);
-          }
-          cell(row, names);
-        } else {
-          cell(row, 'None');
-        }
+      row.dataset.id = item.key;
+      if (item.kind === 'guest') {
+        cell(row, item.name, 'name-cell');
+        cell(row, item.extra, 'number');
+        cell(row, item.partySize, 'number');
       } else {
-        cell(row, '—');
+        cell(row, '↳ ' + item.name, 'name-cell companion-name');
+        cell(row, '', 'number');
+        cell(row, '', 'number');
       }
       body.append(row);
     }
   }
-  $('table-footer').textContent = state.loading ? 'Loading...' : filtered.length + ' of ' + state.rows.length + ' guests';
+  const guestCount = groups.length;
+  const headcount = groups.reduce((sum, guest) => sum + guest.partySize, 0);
+  $('table-footer').textContent = state.loading ? 'Loading...' : guestCount + ' attending guest' + (guestCount === 1 ? '' : 's') + ' · ' + headcount + ' total attendee' + (headcount === 1 ? '' : 's');
   icons();
 }
 
@@ -238,15 +227,13 @@ function csvCell(value) {
   return /[",\r\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
 }
 
-function buildCsv(rows) {
-  const header = ['Guest name', 'Allowed extras', 'RSVP status', 'Party size', 'Additional guests'];
-  const lines = [header, ...rows.map((row) => [
-    row.name,
-    row.extra,
-    row.attending === true ? 'Attending' : row.attending === false ? 'Not attending' : 'Awaiting response',
-    row.attending === null ? '' : row.partySize,
-    row.attending ? (row.additionalGuests.length ? row.additionalGuests.join('; ') : 'None') : ''
-  ])];
+function buildCsv(groups) {
+  const header = ['Guest name', 'Allowed extras', 'Party size'];
+  const lines = [header];
+  for (const guest of groups) {
+    lines.push([guest.name, guest.extra, guest.partySize]);
+    for (const companion of guest.additionalGuests) lines.push(['↳ ' + companion, '', '']);
+  }
   return lines.map((line) => line.map(csvCell).join(',')).join('\r\n');
 }
 
@@ -299,11 +286,10 @@ $('toggle-password').addEventListener('click', () => {
   icons();
 });
 $('search').addEventListener('input', renderRows);
-$('attendance-filter').addEventListener('change', renderRows);
 $('refresh').addEventListener('click', () => { message('notice'); load(); });
 $('export').addEventListener('click', () => {
   const today = new Date().toISOString().slice(0, 10);
-  downloadCsv('attendance-roster-' + today + '.csv', buildCsv(state.rows));
+  downloadCsv('attendance-roster-' + today + '.csv', buildCsv(attendingGroups()));
 });
 $('print').addEventListener('click', () => {
   const savedQuery = $('search').value;
