@@ -30,6 +30,7 @@ document.body.innerHTML = `
       <nav class="tabs" aria-label="Guest management">
         <a href="/Guests.html" ${guestsView ? 'aria-current="page"' : ''}>${icon('users')}Guest list</a>
         <a href="/Responses.html" ${!guestsView ? 'aria-current="page"' : ''}>${icon('mail-check')}Responses</a>
+        <a href="/Attendance.html">${icon('list-checks')}Attendance</a>
       </nav>
       <div class="page-title"><h1>${guestsView ? 'Guest list' : 'RSVP responses'}</h1>
         ${guestsView ? '<button id="add-guest" class="primary">' + icon('plus') + 'Add guest</button>' : ''}

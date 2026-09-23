@@ -112,7 +112,8 @@ export async function createApp(options = {}) {
 
   const publicRoot = path.join(root, 'public');
   const files = [
-    'index.html', 'RSVP.html', 'Guests.html', 'Responses.html', 'support.js', 'admin.js', 'admin.css',
+    'index.html', 'RSVP.html', 'Guests.html', 'Responses.html', 'Attendance.html',
+    'support.js', 'admin.js', 'admin.css', 'attendance.js',
     'vendor/lucide.js', 'vendor/react.js', 'vendor/react-dom.js'
   ];
   for (const directory of ['assets', 'uploads']) {
