@@ -55,7 +55,7 @@
         <!-- ── STEP 1 · find your name ── -->
         <sc-if value="{{ stageSearch }}" hint-placeholder-val="{{ true }}">
           <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 34px;">
-            <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.7; color: #CFDCD5; text-wrap: pretty;">Please find your name below, then tell us who is coming with you.</p>
+            <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.7; color: #CFDCD5; text-wrap: pretty;">Please find your name below.</p>
 
             <div style="position: relative; width: 100%; max-width: 400px; text-align: left;">
               <label for="rsvp-name" style="display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: .24em; color: #F5E1C5; padding-left: .24em;">NAME</label>
@@ -370,7 +370,7 @@ class Component extends DCLogic {
         id: 'extra-' + i, label: 'ADDITIONAL GUEST ' + (i + 1), value,
         onInput: (event) => this.setExtra(i, event.target.value)
       })),
-      submitLabel: s.sending ? 'SENDING...' : 'CONFIRM OUR ATTENDANCE',
+      submitLabel: s.sending ? 'SENDING...' : (1 + s.extras.filter((name) => name.trim()).length) === 1 ? 'CONFIRM MY ATTENDANCE' : 'CONFIRM OUR ATTENDANCE',
       sending: s.sending, submitDisabled: !!(s.sending || unavailable),
       submit: this.submit, decline: this.decline, reset: this.reset,
       sendError: s.sendError || (s.stage === 'form' ? notice : ''),
