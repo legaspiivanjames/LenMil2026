@@ -56,6 +56,7 @@ document.body.innerHTML = `
       <p id="table-footer" class="table-footer" role="status"></p>
     </section>
     <p id="initial-loading" class="boot" role="status">Checking access...</p>
+    <p class="credit"><span class="credit-label">Website created by:</span><span class="credit-name">Ivan James Legaspi</span></p>
   </main>
   <dialog id="guest-dialog" aria-labelledby="guest-title">
     <form id="guest-form">
