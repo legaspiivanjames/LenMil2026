@@ -45,7 +45,7 @@ document.body.innerHTML = `
       </div>
       <div class="table-shell" tabindex="0" role="region" aria-label="Attendance table">
         <table class="attendance-table">
-          <thead><tr>${['Guest name', 'Allowed extras', 'Party size'].map((label) => '<th scope="col">' + label + '</th>').join('')}</tr></thead>
+          <thead><tr>${['Guest name'].map((label) => '<th scope="col">' + label + '</th>').join('')}</tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -136,7 +136,7 @@ function visibleGroups(query) {
 function flatten(groups) {
   const display = [];
   for (const guest of groups) {
-    display.push({ kind: 'guest', key: guest.id, name: guest.name, extra: guest.extra, partySize: guest.partySize });
+    display.push({ kind: 'guest', key: guest.id, name: guest.name });
     guest.additionalGuests.forEach((name, i) => display.push({ kind: 'companion', key: guest.id + '-c' + i, name }));
   }
   return display;
@@ -150,7 +150,7 @@ function renderRows() {
   if (state.loading || !display.length) {
     const row = document.createElement('tr');
     const content = cell(row, state.loading ? 'Loading...' : attendingGroups().length ? 'No matching results.' : 'No attending guests yet.', 'table-message');
-    content.colSpan = 3;
+    content.colSpan = 1;
     body.append(row);
   } else {
     for (const item of display) {
@@ -158,12 +158,13 @@ function renderRows() {
       row.dataset.id = item.key;
       if (item.kind === 'guest') {
         cell(row, item.name, 'name-cell');
-        cell(row, item.extra, 'number');
-        cell(row, item.partySize, 'number');
       } else {
-        cell(row, '↳ ' + item.name, 'name-cell companion-name');
-        cell(row, '', 'number');
-        cell(row, '', 'number');
+        const wrap = document.createElement('span');
+        const arrow = document.createElement('span');
+        arrow.style.fontSize = '.5em';
+        arrow.textContent = '↳';
+        wrap.append(arrow, document.createTextNode(' ' + item.name));
+        cell(row, wrap, 'name-cell companion-name');
       }
       body.append(row);
     }
@@ -228,11 +229,10 @@ function csvCell(value) {
 }
 
 function buildCsv(groups) {
-  const header = ['Guest name', 'Allowed extras', 'Party size'];
-  const lines = [header];
+  const lines = [['Guest name']];
   for (const guest of groups) {
-    lines.push([guest.name, guest.extra, guest.partySize]);
-    for (const companion of guest.additionalGuests) lines.push(['↳ ' + companion, '', '']);
+    lines.push([guest.name]);
+    for (const companion of guest.additionalGuests) lines.push(['↳ ' + companion]);
   }
   return lines.map((line) => line.map(csvCell).join(',')).join('\r\n');
 }
