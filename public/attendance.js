@@ -31,6 +31,11 @@ document.body.innerHTML = `
         <a href="/Attendance.html" aria-current="page">${icon('list-checks')}Attendance</a>
       </nav>
       <div class="page-title"><h1>Attendance</h1></div>
+      <div class="print-title">
+        <p class="print-title-main">Reymil and Aira Wedding Day</p>
+        <p class="print-title-date">Friday, November 20, 2026</p>
+        <p class="print-title-sub">Attendance</p>
+      </div>
       <dl id="summary" class="summary"></dl>
       <div id="notice" class="notice" role="status" hidden></div>
       <div class="toolbar">

@@ -85,6 +85,7 @@ tbody tr:hover { background: #fafbf9; }
 .response-table th:last-child { width: 64px; }
 .attendance-table { min-width: 0; }
 .attendance-table .companion-name { color: var(--muted); }
+.print-title { display: none; }
 .name-cell { font-weight: 500; }
 .mobile-status { display: none !important; }
 .number { font-variant-numeric: tabular-nums; }
@@ -170,4 +171,10 @@ dialog p { overflow-wrap: anywhere; }
   .table-shell { overflow-x: visible; border: 0; }
   table { min-width: 0; }
   .attendance-table th, .attendance-table td { padding-top: 3px; padding-bottom: 3px; }
+  .page-title { display: none; }
+  .print-title { display: block; text-align: center; margin: 0 0 16px; }
+  .print-title-main { margin: 0; font-size: 22px; font-weight: 700; }
+  .print-title-date { margin: 4px 0 0; font-size: 14px; }
+  .print-title-sub { margin: 8px 0 0; font-size: 14px; font-weight: 600; }
+  .attendance-table .companion-name { color: inherit; padding-left: 6px; }
 }
