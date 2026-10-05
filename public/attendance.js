@@ -165,12 +165,7 @@ function renderRows() {
       if (item.kind === 'guest') {
         cell(row, item.name, 'name-cell');
       } else {
-        const wrap = document.createElement('span');
-        const arrow = document.createElement('span');
-        arrow.style.fontSize = '.5em';
-        arrow.textContent = '↳';
-        wrap.append(arrow, document.createTextNode(' ' + item.name));
-        cell(row, wrap, 'name-cell companion-name');
+        cell(row, item.name, 'name-cell companion-name');
       }
       body.append(row);
     }
@@ -238,7 +233,7 @@ function buildCsv(groups) {
   const lines = [['Guest name']];
   for (const guest of groups) {
     lines.push([guest.name]);
-    for (const companion of guest.additionalGuests) lines.push(['↳ ' + companion]);
+    for (const companion of guest.additionalGuests) lines.push([companion]);
   }
   return lines.map((line) => line.map(csvCell).join(',')).join('\r\n');
 }
