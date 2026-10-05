@@ -1,6 +1,6 @@
 const view = document.body.dataset.view;
 const guestsView = view === 'guests';
-const state = { rows: [], guestCount: 0, authenticated: false, loading: false, busy: false, loadId: 0 };
+const state = { rows: [], awaiting: [], guestCount: 0, authenticated: false, loading: false, busy: false, loadId: 0 };
 const icon = (name) => '<i data-lucide="' + name + '" aria-hidden="true"></i>';
 const icons = () => window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
 
@@ -41,7 +41,7 @@ document.body.innerHTML = `
         <div class="search">${icon('search')}<label class="sr-only" for="search">Search ${guestsView ? 'guests' : 'responses'}</label>
           <input id="search" type="search" placeholder="Search by name" autocomplete="off">
         </div>
-        ${!guestsView ? '<div class="filter"><label for="attendance">Attendance</label><select id="attendance"><option value="all">All responses</option><option value="yes">Attending</option><option value="no">Not attending</option></select></div>' : ''}
+        ${!guestsView ? '<div class="filter"><label for="attendance">Attendance</label><select id="attendance"><option value="all">All responses</option><option value="yes">Attending</option><option value="no">Not attending</option><option value="waiting">Awaiting response</option></select></div>' : ''}
         <button id="refresh" class="icon-button" aria-label="Refresh" data-tooltip="Refresh">${icon('refresh-cw')}</button>
       </div>
       <div class="table-shell" tabindex="0" role="region" aria-label="${guestsView ? 'Guest list' : 'RSVP responses'} table">
@@ -91,6 +91,7 @@ function message(id, text = '', success = false) {
 function showLogin(text = '') {
   state.authenticated = false;
   state.rows = [];
+  state.awaiting = [];
   state.loadId += 1;
   $('rows').replaceChildren();
   $('summary').replaceChildren();
@@ -171,22 +172,37 @@ function actionButton(label, symbol, action, danger = false) {
 function renderRows() {
   const query = $('search').value.trim().toLowerCase();
   const attendance = $('attendance')?.value || 'all';
-  const filtered = state.rows.filter((row) => {
-    const names = guestsView ? row.name : [row.name, ...row.additionalGuests].join(' ');
+  const awaitingView = !guestsView && attendance === 'waiting';
+  const source = awaitingView ? state.awaiting : state.rows;
+  const filtered = source.filter((row) => {
+    const names = guestsView ? row.name : [row.name, ...(row.additionalGuests || [])].join(' ');
     return names.toLowerCase().includes(query) &&
-      (guestsView || attendance === 'all' || row.attending === (attendance === 'yes'));
+      (guestsView || awaitingView || attendance === 'all' || row.attending === (attendance === 'yes'));
   });
   const body = $('rows');
   body.replaceChildren();
   if (state.loading || !filtered.length) {
     const row = document.createElement('tr');
-    const content = cell(row, state.loading ? 'Loading...' : state.rows.length ? 'No matching results.' : guestsView ? 'No guests yet.' : 'No RSVP responses yet.', 'table-message');
+    const emptyText = state.loading ? 'Loading...'
+      : awaitingView && !state.awaiting.length ? 'Everyone has responded.'
+      : source.length ? 'No matching results.'
+      : guestsView ? 'No guests yet.' : 'No RSVP responses yet.';
+    const content = cell(row, emptyText, 'table-message');
     content.colSpan = guestsView ? 4 : 8;
     body.append(row);
   } else {
     for (const item of filtered) {
       const row = document.createElement('tr');
       row.dataset.id = item.id;
+      if (awaitingView) {
+        cell(row, item.name, 'name-cell');
+        cell(row, badge('Awaiting response', 'waiting'));
+        cell(row, item.extra, 'number');
+        for (let i = 0; i < 4; i++) cell(row, '—');
+        cell(row, '');
+        body.append(row);
+        continue;
+      }
       const nameCell = cell(row, item.name, 'name-cell');
       if (guestsView) {
         const mobileStatus = badge(item.responded ? 'Responded' : 'Awaiting response', item.responded ? 'responded' : 'waiting');
@@ -220,7 +236,8 @@ function renderRows() {
       body.append(row);
     }
   }
-  $('table-footer').textContent = state.loading ? 'Loading...' : filtered.length + ' of ' + state.rows.length + (guestsView ? ' guests' : ' responses');
+  const noun = guestsView ? ' guests' : awaitingView ? ' guests awaiting response' : ' responses';
+  $('table-footer').textContent = state.loading ? 'Loading...' : filtered.length + ' of ' + source.length + noun;
   icons();
 }
 
@@ -241,10 +258,19 @@ async function load() {
   $('refresh').disabled = true;
   renderRows();
   try {
-    const data = await api('/api/admin/' + view);
+    const [data, guestData] = await Promise.all([
+      api('/api/admin/' + view),
+      guestsView ? null : api('/api/admin/guests')
+    ]);
     if (loadId !== state.loadId) return;
     state.rows = guestsView ? data.guests.slice().sort((a, b) => a.name.localeCompare(b.name)) : data.responses;
     state.guestCount = data.guestCount || 0;
+    if (!guestsView) {
+      const responded = new Set(data.responses.map((response) => response.guestId));
+      state.awaiting = guestData.guests
+        .filter((guest) => !responded.has(guest.id))
+        .map((guest) => ({ id: guest.id, name: guest.name, extra: guest.extra }));
+    }
     renderSummary();
   } catch (error) {
     if (loadId === state.loadId) message('notice', error.message);
